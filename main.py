@@ -1,34 +1,36 @@
 # Build Pac-Man from Scratch in Python with PyGame!!
 import copy
 from Board.draw_board import draw_board
-from Board.board import boards
 import pygame
 from Char import Pacman
+from Board import board
 
 # ------------------- Initial -------------------------
-pygame.init()
+WIDTH = 900
+HEIGHT = 900 + 70
 
-WIDTH = 900  + 250
-HEIGHT = 950
+pygame.init()
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 timer = pygame.time.Clock()
 font = pygame.font.Font('freesansbold.ttf', 20)
-level = copy.deepcopy(boards)
-fps = 60
+level = copy.deepcopy(draw_board)
 
+fps = 60
+score = 0 
 counter = 0
+run = True
 flicker = False
-# R, L, U, D
-turns_allowed = [False, False, False, False]
 direction_command = 0
-player_speed = 2
-WHITE = (0,0,0)
+
+turns_allowed = [False, False, False, False]
 
 pacman = Pacman.pacman()
+board = board.board()
+# --------------------------------------------------
 
-run = True
 while run:
     timer.tick(fps)    
+
     if counter < 19:
         counter += 1
         if counter > 3:
@@ -37,18 +39,17 @@ while run:
         counter = 0
         flicker = True
     
-    pygame.draw.rect(screen, WHITE, (950, 0, 200, 900))
     screen.fill('black')
-    draw_board(level, screen, flicker)
-    center_x = pacman.get_player_x() + 23
-    center_y = pacman.get_player_y() + 24
+
+    board.draw_board(level, screen, flicker)
+    board.draw_score(score, font, screen)
 
     pacman.draw_player(screen, counter)
-    
-    turns_allowed = pacman.check_position(center_x, center_y, level)
-
-    pacman.move_player(player_speed,turns_allowed)
-
+    pacman.set_center_x(pacman.get_player_x() + 23)
+    pacman.set_center_y(pacman.get_player_y() + 24)
+    turns_allowed = pacman.check_position(level)  
+    pacman.move_player(turns_allowed)
+    score = pacman.score_player(score, level)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -87,7 +88,6 @@ while run:
         pacman.set_player_x(-47)
     elif pacman.get_player_x() < -50:
         pacman.set_player_x(897)
-
 
     pygame.display.flip()
 pygame.quit()
