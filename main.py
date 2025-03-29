@@ -7,7 +7,7 @@ from Board import board
 
 # ------------------- Initial -------------------------
 WIDTH = 900
-HEIGHT = 900 + 70
+HEIGHT = 900 + 50
 
 pygame.init()
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
@@ -21,7 +21,12 @@ counter = 0
 run = True
 flicker = False
 direction_command = 0
+power = False
+power_count = 0
+started_pacman = 0
+moving = False
 
+eaten_ghosts = [False, False, False, False]
 turns_allowed = [False, False, False, False]
 
 pacman = Pacman.pacman()
@@ -39,17 +44,31 @@ while run:
         counter = 0
         flicker = True
     
+    if power and power_count < 420:
+        power_count += 1
+        pacman.set_player_speed(3)
+    elif power and power_count >= 420:
+        power_count = 0 
+        power = False
+        pacman.set_player_speed(2)
+
+    if started_pacman < 180:
+        started_pacman += 1
+        moving = False
+    else: moving = True
+
     screen.fill('black')
 
     board.draw_board(level, screen, flicker)
-    board.draw_score(score, font, screen)
+    board.draw_score(score, font, screen, power, flicker)
 
     pacman.draw_player(screen, counter)
     pacman.set_center_x(pacman.get_player_x() + 23)
     pacman.set_center_y(pacman.get_player_y() + 24)
     turns_allowed = pacman.check_position(level)  
-    pacman.move_player(turns_allowed)
-    score = pacman.score_player(score, level)
+    if moving:
+        pacman.move_player(turns_allowed)
+    score, power, power_count, eaten_ghosts = pacman.score_player(score, level, power, power_count, eaten_ghosts)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -85,7 +104,7 @@ while run:
         pacman.set_direction(3)
 
     if pacman.get_player_x() > 900:
-        pacman.set_player_x(-47)
+        pacman.er_x(-47)
     elif pacman.get_player_x() < -50:
         pacman.set_player_x(897)
 

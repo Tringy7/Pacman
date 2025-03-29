@@ -1,18 +1,21 @@
 import pygame
 from math import pi as PI
-import fontTools
+from Char import Pacman
 
 WIDTH = 900   
-HEIGHT = 900 + 70
+HEIGHT = 900 + 50
+num1 = ((HEIGHT - 50) // 32)
+num2 = (WIDTH // 30)
 color = 'blue'
+lives = 3
+pacman = Pacman.pacman()
+pacman_img = pacman.get_player_images()
 
 class board():
     def __init__(self):
         pass
 
     def draw_board(self, level, screen, flicker):
-        num1 = ((HEIGHT - 70) // 32)
-        num2 = (WIDTH // 30)
         for i in range(len(level)):
             for j in range(len(level[i])):
                 if level[i][j] == 1:
@@ -42,6 +45,10 @@ class board():
                     pygame.draw.line(screen, 'white', (j * num2, i * num1 + (0.5 * num1)),
                                     (j * num2 + num2, i * num1 + (0.5 * num1)), 3)
                     
-    def draw_score(self, score, font, screen):
+    def draw_score(self, score, font, screen, power, flicker):
         score_text = font.render(f"Score: {score}", True, (255, 255, 255))
         screen.blit(score_text, (10, 920))
+        if power and not flicker:
+            pygame.draw.circle(screen, 'green', (142, 930), 10)
+        for i in range(lives):
+            screen.blit(pygame.transform.scale(pacman_img[0], (30, 30)), (770 + i * 40, 915))

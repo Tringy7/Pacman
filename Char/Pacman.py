@@ -1,8 +1,8 @@
 import pygame
 
 WIDTH = 900   
-HEIGHT = 900 + 70
-num1 = (HEIGHT - 70) // 32
+HEIGHT = 900 + 50
+num1 = (HEIGHT - 50) // 32
 num2 = (WIDTH // 30)
 num3 = 15
 
@@ -18,6 +18,9 @@ class pacman():
         self.center_x = 0
         self.center_y = 0
         self.player_speed = 2
+
+    def get_player_images(self):
+        return self.player_images
 
     def set_player_x(self,x):
         self.player_x = x
@@ -48,6 +51,12 @@ class pacman():
     
     def get_center_y(self):
         return self.center_y
+    
+    def set_player_speed(self, player_speed):
+        self.player_speed = player_speed 
+    
+    def get_player_speed(self):
+        return self.player_speed
 
     def draw_player(self, screen, counter):
         # 0-RIGHT, 1-LEFT, 2-UP, 3-DOWN
@@ -115,7 +124,7 @@ class pacman():
         elif self.direction == 3 and turns_allowed[3]:
             self.player_y = self.player_y + self.player_speed
      
-    def score_player(self, score, level):
+    def score_player(self, score, level, power, power_count, eaten_ghosts):
         if 0 < self.player_x < 870:
             if level[self.center_y//num1][self.center_x//num2] == 1:
                 level[self.center_y//num1][self.center_x//num2] = 0
@@ -123,5 +132,8 @@ class pacman():
             if level[self.center_y//num1][self.center_x//num2] == 2:
                 level[self.center_y//num1][self.center_x//num2] = 0
                 score += 50
+                power = True
+                power_count = 0
+                eaten_ghosts = [False, False, False, False]
         
-        return score
+        return score, power, power_count, eaten_ghosts
