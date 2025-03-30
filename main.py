@@ -44,10 +44,10 @@ while run:
         counter = 0
         flicker = True
     
-    if power and power_count < 420:
+    if power and power_count < 300:
         power_count += 1
         pacman.set_player_speed(3)
-    elif power and power_count >= 420:
+    elif power and power_count >= 300:
         power_count = 0 
         power = False
         pacman.set_player_speed(2)
