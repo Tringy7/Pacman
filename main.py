@@ -17,20 +17,24 @@ level = copy.deepcopy(draw_board)
 
 fps = 60
 score = 0 
-counter = 0
-run = True
+# -- Tính thời gian nhấp nháy của mục tiêu
+counter = 0 
 flicker = False
+
+#----------- Lệnh di chuyển của Pacman------------
 direction_command = 0
 power = False
 power_count = 0
 started_pacman = 0
 moving = False
 
-eaten_ghosts = [False, False, False, False]
-turns_allowed = [False, False, False, False]
+eaten_ghosts = [False, False, False, False]     # Trạng thái của ghost
+turns_allowed = [False, False, False, False]    # Hướng di chuyển của pacman
 
 pacman = Pacman.pacman()
 board = board.board()
+
+run = True
 # --------------------------------------------------
 
 while run:

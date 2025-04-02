@@ -15,6 +15,7 @@ class board():
     def __init__(self):
         pass
 
+    # Vẽ bản đồ
     def draw_board(self, level, screen, flicker):
         for i in range(len(level)):
             for j in range(len(level[i])):
@@ -44,7 +45,8 @@ class board():
                 if level[i][j] == 9:
                     pygame.draw.line(screen, 'white', (j * num2, i * num1 + (0.5 * num1)),
                                     (j * num2 + num2, i * num1 + (0.5 * num1)), 3)
-                    
+
+    # Tính điểm và vẽ mạng cho pacman          
     def draw_score(self, score, font, screen, power, flicker):
         score_text = font.render(f"Score: {score}", True, (255, 255, 255))
         screen.blit(score_text, (10, 920))

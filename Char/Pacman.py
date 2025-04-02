@@ -69,6 +69,7 @@ class pacman():
         elif self.direction == 3:
             screen.blit(pygame.transform.rotate(self.player_images[counter // 5], 270), (self.player_x, self.player_y))
 
+    # Kiểm tra vị trí để tính toán xem pacman sẽ quay hướng nào thì đi được 
     def check_position(self, level):
         turns = [False, False, False, False]
         if self.center_x // 30 < 29:
@@ -113,6 +114,7 @@ class pacman():
 
         return turns
     
+    # Di chuyển pacman
     def move_player(self, turns_allowed):
         # r, l, u, d
         if self.direction == 0 and turns_allowed[0]:
@@ -124,6 +126,7 @@ class pacman():
         elif self.direction == 3 and turns_allowed[3]:
             self.player_y = self.player_y + self.player_speed
      
+    # Tính điểm 
     def score_player(self, score, level, power, power_count, eaten_ghosts):
         if 0 < self.player_x < 870:
             if level[self.center_y//num1][self.center_x//num2] == 1:
